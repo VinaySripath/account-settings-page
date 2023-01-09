@@ -25,18 +25,10 @@ const Appbar = () => {
               className="h-8 w-8 md:h-10 md:w-10 hover:cursor-pointer"
             />
           </IconButton>
-          <div className={`hover:cursor-pointer ${"md:hidden"}`}>
-            <AccountCircleOutlinedIcon
-              fontSize="medium"
-              sx={{ color: "black" }}
-            />
-          </div>
-          <div className={`hover:cursor-pointer ${"mobile:hidden"}`}>
-            <AccountCircleOutlinedIcon
-              fontSize="large"
-              sx={{ color: "black" }}
-            />
-          </div>
+          <AccountCircleOutlinedIcon
+            fontSize="medium"
+            sx={{ color: "black" }}
+          />
         </Toolbar>
       </AppBar>
     </Box>

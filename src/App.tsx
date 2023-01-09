@@ -1,10 +1,12 @@
+import React from "react";
+import { Box } from "@mui/material";
 import AccountSettings from "./pages/AccountSettings";
 
 function App() {
   return (
-    <div className="bg-whitesmoke min-h-screen">
+    <Box sx={{ backgroundColor: "#F5F5F5" }}>
       <AccountSettings />
-    </div>
+    </Box>
   );
 }
 
