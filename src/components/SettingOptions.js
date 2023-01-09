@@ -1,24 +1,32 @@
 import React from "react";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import ChevronRightIcon from "@mui/icons-material/ChevronRight";
-import { IconButton } from "@mui/material";
+import { IconButton, Paper } from "@mui/material";
 
 const SettingOptions = ({ text }) => {
   return (
-    <div className="w-90 flex justify-between items-center py-1 pl-4 pr-2 md:p-6 bg-white rounded-md drop-shadow-md mt-2">
+    <Paper
+      sx={{
+        width: "90%",
+        display: "flex",
+        justifyContent: "space-between",
+        pl: 1,
+        mb: 1.5,
+        py: 0.5,
+        borderRadius: 2,
+        boxShadow: "2px 2px 5px rgb(0 0 0 / 10%)",
+      }}
+    >
       <div className="w-fit flex justify-between items-center pb-1">
-        <div className={`${"md:hidden"}`}>
+        <div>
           <CheckCircleIcon fontSize="small" style={{ fill: "#06c258" }} />
         </div>
-        <div className={`${"mobile:hidden"}`}>
-          <CheckCircleIcon fontSize="large" style={{ fill: "#06c258" }} />
-        </div>
-        <div className="pl-6 text-sm md:text-base">{text}</div>
+        <div className="pl-6 text-sm font-semibold">{text}</div>
       </div>
       <IconButton>
         <ChevronRightIcon />
       </IconButton>
-    </div>
+    </Paper>
   );
 };
 
