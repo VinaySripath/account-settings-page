@@ -1,10 +1,43 @@
-import React from "react";
+import React, { useState } from "react";
 import { Box, Typography } from "@mui/material";
 import Appbar from "../components/Appbar";
 import Footer from "../components/Footer";
 import SettingOptions from "../components/SettingOptions";
 
 const AccountSettings = () => {
+  const emailState = JSON.parse(localStorage.getItem("emailState"));
+  const linkBankState = JSON.parse(localStorage.getItem("linkBankState"));
+  const cardDetailsState = JSON.parse(localStorage.getItem("cardDetailsState"));
+  const depositState = JSON.parse(localStorage.getItem("depositState"));
+  const payDistributionState = JSON.parse(
+    localStorage.getItem("payDistributionState")
+  );
+  const [email, setEmail] = useState(emailState || "active");
+  const [linkBank, setLinkBank] = useState(
+    linkBankState ||
+      (emailState === "completed" && linkBankState === "incomplete"
+        ? "active"
+        : "incomplete")
+  );
+  const [cardDetails, setCardDetails] = useState(
+    cardDetailsState ||
+      (linkBankState === "completed" && cardDetailsState === "incomplete"
+        ? "active"
+        : "incomplete")
+  );
+  const [deposit, setDeposit] = useState(
+    depositState ||
+      (cardDetailsState === "completed" && depositState === "incomplete"
+        ? "active"
+        : "incomplete")
+  );
+  const [payDistribution, setPayDistribution] = useState(
+    payDistributionState ||
+      (depositState === "completed" && payDistributionState === "incomplete"
+        ? "active"
+        : "incomplete")
+  );
+
   return (
     <Box>
       <Appbar />
@@ -40,11 +73,44 @@ const AccountSettings = () => {
           >
             Select an option below to change your account settings.
           </Typography>
-          <SettingOptions text={"Verify Email"} />
-          <SettingOptions text={"Link a Bank"} />
-          <SettingOptions text={"Debit Card Details"} />
-          <SettingOptions text={"Direct Deposit"} />
-          <SettingOptions text={"Pay Distribution"} />
+          <SettingOptions
+            text={"Verify Email"}
+            cardState={email}
+            nextState={linkBank}
+            setCardState={setEmail}
+            setNextState={setLinkBank}
+            type="email"
+          />
+          <SettingOptions
+            text={"Link a Bank"}
+            cardState={linkBank}
+            nextState={cardDetails}
+            setCardState={setLinkBank}
+            setNextState={setCardDetails}
+            type="linkBank"
+          />
+          <SettingOptions
+            text={"Debit Card Details"}
+            cardState={cardDetails}
+            nextState={deposit}
+            setCardState={setCardDetails}
+            setNextState={setDeposit}
+            type="cardDetails"
+          />
+          <SettingOptions
+            text={"Direct Deposit"}
+            cardState={deposit}
+            nextState={payDistribution}
+            setCardState={setDeposit}
+            setNextState={setPayDistribution}
+            type="deposit"
+          />
+          <SettingOptions
+            text={"Pay Distribution"}
+            cardState={payDistribution}
+            setCardState={setPayDistribution}
+            type="payDistribution"
+          />
         </Box>
         <Box
           sx={{
