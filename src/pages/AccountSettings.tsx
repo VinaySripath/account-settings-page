@@ -80,6 +80,7 @@ const AccountSettings = () => {
             setCardState={setEmail}
             setNextState={setLinkBank}
             type="email"
+            nextType="linkBank"
           />
           <SettingOptions
             text={"Link a Bank"}
@@ -88,6 +89,7 @@ const AccountSettings = () => {
             setCardState={setLinkBank}
             setNextState={setCardDetails}
             type="linkBank"
+            nextType="cardDetails"
           />
           <SettingOptions
             text={"Debit Card Details"}
@@ -96,6 +98,7 @@ const AccountSettings = () => {
             setCardState={setCardDetails}
             setNextState={setDeposit}
             type="cardDetails"
+            nextType="deposit"
           />
           <SettingOptions
             text={"Direct Deposit"}
@@ -104,6 +107,7 @@ const AccountSettings = () => {
             setCardState={setDeposit}
             setNextState={setPayDistribution}
             type="deposit"
+            nextType="payDistribution"
           />
           <SettingOptions
             text={"Pay Distribution"}

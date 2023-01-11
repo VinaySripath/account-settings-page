@@ -13,6 +13,7 @@ const SettingOptions = ({
   setCardState,
   setNextState,
   type,
+  nextType,
 }: {
   text: string;
   cardState: string;
@@ -20,6 +21,7 @@ const SettingOptions = ({
   setCardState: any;
   setNextState?: any;
   type: string;
+  nextType?: string;
 }) => {
   const location = useLocation();
   const status = location.state?.status;
@@ -39,6 +41,7 @@ const SettingOptions = ({
         nextState === "incomplete"
       ) {
         setNextState && setNextState("active");
+        localStorage.setItem(`${nextType}State`, JSON.stringify("active"));
       }
       localStorage.setItem(`${type}State`, JSON.stringify(status));
     }

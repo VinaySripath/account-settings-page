@@ -10,7 +10,7 @@ const Settings = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const step = location.state.type;
-  console.log(step);
+  // console.log(step);
   const clickHandler = (status: string) => {
     navigate("/", { state: { status, step } });
   };
