@@ -14,6 +14,10 @@ const SettingOptions = ({
   setNextState,
   type,
   nextType,
+  stateIndex,
+  stateArray,
+  setStateArray,
+  stateNameArray,
 }: {
   text: string;
   cardState: string;
@@ -22,9 +26,14 @@ const SettingOptions = ({
   setNextState?: any;
   type: string;
   nextType?: string;
+  stateIndex?: number;
+  stateArray?: string[];
+  setStateArray?: any[];
+  stateNameArray?: string[];
 }) => {
   const location = useLocation();
   const status = location.state?.status;
+  const refresh = location.state?.refresh;
   const step = location.state?.step;
   const navigate = useNavigate();
   const settingHandler = () => {
@@ -36,14 +45,80 @@ const SettingOptions = ({
   useEffect(() => {
     if (step === type) {
       setCardState(status);
+      let checkNextIncomplete = true;
+      for (let i = 0; i < stateIndex; i++) {
+        if (stateArray[i] === "active") {
+          checkNextIncomplete = false;
+          break;
+        }
+      }
+      if (
+        checkNextIncomplete &&
+        (status === "completed" || status === "pending")
+      ) {
+        for (let i = stateIndex + 1; i < stateArray.length; i++) {
+          if (stateArray[i] === "active") {
+            break;
+          }
+          if (stateArray[i] === "incomplete") {
+            setStateArray[i]("active");
+            localStorage.setItem(
+              `${stateNameArray[i]}State`,
+              JSON.stringify("active")
+            );
+            break;
+          }
+        }
+      }
+
+      if (status === "active") {
+        for (let i = 0; i < stateIndex; i++) {
+          if (stateArray[i] === "active") {
+            setStateArray[stateIndex]("incomplete");
+            localStorage.setItem(
+              `${stateNameArray[stateIndex]}State`,
+              JSON.stringify("incomplete")
+            );
+            break;
+          } else if (stateArray[i] !== "active" && i === stateIndex - 1) {
+            setStateArray[stateIndex]("active");
+            localStorage.setItem(
+              `${stateNameArray[stateIndex]}State`,
+              JSON.stringify("active")
+            );
+          }
+        }
+        if (status === "active" && stateIndex === 0) {
+          localStorage.setItem(
+            `${stateNameArray[stateIndex]}State`,
+            JSON.stringify("active")
+          );
+        }
+        for (let i = stateIndex + 1; i < stateArray.length; i++) {
+          if (stateArray[i] === "active") {
+            setStateArray[i]("incomplete");
+            localStorage.setItem(
+              `${stateNameArray[i]}State`,
+              JSON.stringify("incomplete")
+            );
+            break;
+          }
+        }
+      }
+
       if (
         (status === "completed" || status === "pending") &&
         nextState === "incomplete"
       ) {
         setNextState && setNextState("active");
         localStorage.setItem(`${nextType}State`, JSON.stringify("active"));
+      } else if (status === "active" && nextState === "active") {
+        setNextState && setNextState("incomplete");
+        localStorage.setItem(`${nextType}State`, JSON.stringify("incomplete"));
       }
-      localStorage.setItem(`${type}State`, JSON.stringify(status));
+      if (status === "completed" || status === "pending" || refresh) {
+        localStorage.setItem(`${type}State`, JSON.stringify(status));
+      }
     }
     // eslint-disable-next-line
   }, [status, step]);

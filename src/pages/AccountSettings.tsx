@@ -37,7 +37,6 @@ const AccountSettings = () => {
         ? "active"
         : "incomplete")
   );
-
   return (
     <Box>
       <Appbar />
@@ -81,6 +80,28 @@ const AccountSettings = () => {
             setNextState={setLinkBank}
             type="email"
             nextType="linkBank"
+            stateIndex={0}
+            stateArray={[
+              email,
+              linkBank,
+              cardDetails,
+              deposit,
+              payDistribution,
+            ]}
+            setStateArray={[
+              setEmail,
+              setLinkBank,
+              setCardDetails,
+              setDeposit,
+              setPayDistribution,
+            ]}
+            stateNameArray={[
+              "email",
+              "linkBank",
+              "cardDetails",
+              "deposit",
+              "payDistribution",
+            ]}
           />
           <SettingOptions
             text={"Link a Bank"}
@@ -90,6 +111,28 @@ const AccountSettings = () => {
             setNextState={setCardDetails}
             type="linkBank"
             nextType="cardDetails"
+            stateIndex={1}
+            stateArray={[
+              email,
+              linkBank,
+              cardDetails,
+              deposit,
+              payDistribution,
+            ]}
+            setStateArray={[
+              setEmail,
+              setLinkBank,
+              setCardDetails,
+              setDeposit,
+              setPayDistribution,
+            ]}
+            stateNameArray={[
+              "email",
+              "linkBank",
+              "cardDetails",
+              "deposit",
+              "payDistribution",
+            ]}
           />
           <SettingOptions
             text={"Debit Card Details"}
@@ -99,6 +142,28 @@ const AccountSettings = () => {
             setNextState={setDeposit}
             type="cardDetails"
             nextType="deposit"
+            stateIndex={2}
+            stateArray={[
+              email,
+              linkBank,
+              cardDetails,
+              deposit,
+              payDistribution,
+            ]}
+            setStateArray={[
+              setEmail,
+              setLinkBank,
+              setCardDetails,
+              setDeposit,
+              setPayDistribution,
+            ]}
+            stateNameArray={[
+              "email",
+              "linkBank",
+              "cardDetails",
+              "deposit",
+              "payDistribution",
+            ]}
           />
           <SettingOptions
             text={"Direct Deposit"}
@@ -108,12 +173,56 @@ const AccountSettings = () => {
             setNextState={setPayDistribution}
             type="deposit"
             nextType="payDistribution"
+            stateIndex={3}
+            stateArray={[
+              email,
+              linkBank,
+              cardDetails,
+              deposit,
+              payDistribution,
+            ]}
+            setStateArray={[
+              setEmail,
+              setLinkBank,
+              setCardDetails,
+              setDeposit,
+              setPayDistribution,
+            ]}
+            stateNameArray={[
+              "email",
+              "linkBank",
+              "cardDetails",
+              "deposit",
+              "payDistribution",
+            ]}
           />
           <SettingOptions
             text={"Pay Distribution"}
             cardState={payDistribution}
             setCardState={setPayDistribution}
             type="payDistribution"
+            stateIndex={4}
+            stateArray={[
+              email,
+              linkBank,
+              cardDetails,
+              deposit,
+              payDistribution,
+            ]}
+            setStateArray={[
+              setEmail,
+              setLinkBank,
+              setCardDetails,
+              setDeposit,
+              setPayDistribution,
+            ]}
+            stateNameArray={[
+              "email",
+              "linkBank",
+              "cardDetails",
+              "deposit",
+              "payDistribution",
+            ]}
           />
         </Box>
         <Box

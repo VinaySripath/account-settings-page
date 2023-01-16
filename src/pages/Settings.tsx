@@ -11,8 +11,8 @@ const Settings = () => {
   const location = useLocation();
   const step = location.state.type;
   // console.log(step);
-  const clickHandler = (status: string) => {
-    navigate("/", { state: { status, step } });
+  const clickHandler = (status: string, refresh?: boolean) => {
+    navigate("/", { state: { status, step, refresh } });
   };
   return (
     <Box
@@ -44,8 +44,8 @@ const Settings = () => {
           sx={{ pr: 2 }}
           onClick={() => {
             step === "email"
-              ? clickHandler("active")
-              : clickHandler("incomplete");
+              ? clickHandler("active", true)
+              : clickHandler("incomplete", true);
           }}
         >
           <Typography>refresh</Typography>
