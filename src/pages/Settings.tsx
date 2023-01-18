@@ -44,8 +44,8 @@ const Settings = () => {
           sx={{ pr: 2 }}
           onClick={() => {
             step === "email"
-              ? clickHandler("active", true)
-              : clickHandler("incomplete", true);
+              ? clickHandler("incomplete", true)
+              : clickHandler("incomplete", false);
           }}
         >
           <Typography>refresh</Typography>

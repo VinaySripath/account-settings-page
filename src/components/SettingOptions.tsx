@@ -21,12 +21,12 @@ const SettingOptions = ({
 }: {
   text: string;
   cardState: {
-    state: any;
+    state: string;
     completedOnce: boolean;
     stepToBeCompleted: boolean;
   };
   nextState?: {
-    state: any;
+    state: string;
     completedOnce: boolean;
     stepToBeCompleted: boolean;
   };
@@ -36,7 +36,7 @@ const SettingOptions = ({
   nextType?: string;
   stateIndex?: number;
   stateArray?: {
-    state: any;
+    state: string;
     completedOnce: boolean;
     stepToBeCompleted: boolean;
   }[];
@@ -155,7 +155,7 @@ const SettingOptions = ({
       }
       if (
         (status === "completed" || status === "pending") &&
-        nextState.state === "incomplete"
+        nextState?.state === "incomplete"
       ) {
         setNextState &&
           setNextState({
@@ -171,7 +171,10 @@ const SettingOptions = ({
             stepToBeCompleted: true,
           })
         );
-      } else if (status === "active" && nextState.stepToBeCompleted === true) {
+      } else if (
+        status === "incomplete" &&
+        nextState?.stepToBeCompleted === true
+      ) {
         setNextState &&
           setNextState({
             state: "incomplete",
@@ -188,8 +191,9 @@ const SettingOptions = ({
         );
       }
       if (status === "completed" || status === "pending" || refresh) {
+        console.log(`${type}State`);
         setCardState({
-          state: "completed",
+          state: status,
           completedOnce: true,
           stepToBeCompleted: false,
         });
@@ -232,8 +236,7 @@ const SettingOptions = ({
           {cardState.state === "completed" && (
             <CheckCircleIcon fontSize="small" style={{ fill: "#06c258" }} />
           )}
-          {(cardState.stepToBeCompleted ||
-            cardState.state === "incomplete") && (
+          {cardState.state === "incomplete" && (
             <CheckCircleOutlineIcon
               fontSize="small"
               style={{ fill: "#90909090" }}
@@ -270,8 +273,8 @@ const SettingOptions = ({
 
 export default SettingOptions;
 
-const abc = {
-  completedOnce: true,
-  state: "complete || incomplete || pending",
-  stepToBeCompleted: true,
-};
+// const abc = {
+//   completedOnce: true,
+//   state: "complete || incomplete || pending",
+//   stepToBeCompleted: true,
+// };
