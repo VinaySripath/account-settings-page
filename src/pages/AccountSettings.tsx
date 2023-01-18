@@ -12,30 +12,62 @@ const AccountSettings = () => {
   const payDistributionState = JSON.parse(
     localStorage.getItem("payDistributionState")
   );
-  const [email, setEmail] = useState(emailState || "active");
+  const [email, setEmail] = useState(
+    emailState
+      ? emailState
+      : {
+          state: "incomplete",
+          completedOnce: false,
+          stepToBeCompleted: true,
+        }
+  );
   const [linkBank, setLinkBank] = useState(
-    linkBankState ||
-      (emailState === "completed" && linkBankState === "incomplete"
-        ? "active"
-        : "incomplete")
+    linkBankState
+      ? linkBankState
+      : emailState === "completed" && linkBankState === "incomplete"
+      ? {
+          state: "incomplete",
+          completedOnce: false,
+          stepToBeCompleted: true,
+        }
+      : {
+          state: "incomplete",
+          completedOnce: false,
+          stepToBeCompleted: false,
+        }
   );
   const [cardDetails, setCardDetails] = useState(
-    cardDetailsState ||
-      (linkBankState === "completed" && cardDetailsState === "incomplete"
-        ? "active"
-        : "incomplete")
+    cardDetailsState
+      ? cardDetailsState
+      : linkBankState === "completed" && cardDetailsState === "incomplete"
+      ? {
+          state: "incomplete",
+          completedOnce: false,
+          stepToBeCompleted: true,
+        }
+      : { state: "incomplete", completedOnce: false, stepToBeCompleted: false }
   );
   const [deposit, setDeposit] = useState(
-    depositState ||
-      (cardDetailsState === "completed" && depositState === "incomplete"
-        ? "active"
-        : "incomplete")
+    depositState
+      ? depositState
+      : cardDetailsState === "completed" && depositState === "incomplete"
+      ? { state: "incomplete", completedOnce: false, stepToBeCompleted: true }
+      : { state: "incomplete", completedOnce: false, stepToBeCompleted: false }
   );
   const [payDistribution, setPayDistribution] = useState(
-    payDistributionState ||
-      (depositState === "completed" && payDistributionState === "incomplete"
-        ? "active"
-        : "incomplete")
+    payDistributionState
+      ? payDistributionState
+      : depositState === "completed" && payDistributionState === "incomplete"
+      ? {
+          state: "incomplete",
+          completedOnce: false,
+          stepToBeCompleted: true,
+        }
+      : {
+          state: "incomplete",
+          completedOnce: false,
+          stepToBeCompleted: false,
+        }
   );
   return (
     <Box>

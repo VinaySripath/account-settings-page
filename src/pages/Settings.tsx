@@ -36,7 +36,7 @@ const Settings = () => {
         </IconButton>
       </Box>
       <Box>
-        <IconButton sx={{ pr: 2 }} onClick={() => clickHandler("active")}>
+        <IconButton sx={{ pr: 2 }} onClick={() => clickHandler("incomplete")}>
           <Typography>Failed</Typography>
           <CancelOutlinedIcon />
         </IconButton>

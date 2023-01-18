@@ -20,14 +20,26 @@ const SettingOptions = ({
   stateNameArray,
 }: {
   text: string;
-  cardState: string;
-  nextState?: string;
+  cardState: {
+    state: any;
+    completedOnce: boolean;
+    stepToBeCompleted: boolean;
+  };
+  nextState?: {
+    state: any;
+    completedOnce: boolean;
+    stepToBeCompleted: boolean;
+  };
   setCardState: any;
   setNextState?: any;
   type: string;
   nextType?: string;
   stateIndex?: number;
-  stateArray?: string[];
+  stateArray?: {
+    state: any;
+    completedOnce: boolean;
+    stepToBeCompleted: boolean;
+  }[];
   setStateArray?: any[];
   stateNameArray?: string[];
 }) => {
@@ -37,7 +49,11 @@ const SettingOptions = ({
   const step = location.state?.step;
   const navigate = useNavigate();
   const settingHandler = () => {
-    if (cardState !== "incomplete") {
+    if (
+      cardState.completedOnce ||
+      cardState.state === "completed" ||
+      (cardState.state === "incomplete" && cardState.stepToBeCompleted)
+    ) {
       navigate("/settings", { state: { type } });
     }
   };
@@ -47,7 +63,7 @@ const SettingOptions = ({
       setCardState(status);
       let checkNextIncomplete = true;
       for (let i = 0; i < stateIndex; i++) {
-        if (stateArray[i] === "active") {
+        if (stateArray[i].stepToBeCompleted) {
           checkNextIncomplete = false;
           break;
         }
@@ -57,71 +73,139 @@ const SettingOptions = ({
         (status === "completed" || status === "pending")
       ) {
         for (let i = stateIndex + 1; i < stateArray.length; i++) {
-          if (stateArray[i] === "active") {
+          if (stateArray[i].stepToBeCompleted) {
             break;
           }
-          if (stateArray[i] === "incomplete") {
-            setStateArray[i]("active");
+          if (stateArray[i].state) {
+            setStateArray[i]({
+              state: "incomplete",
+              completedOnce: false,
+              stepToBeCompleted: true,
+            });
             localStorage.setItem(
               `${stateNameArray[i]}State`,
-              JSON.stringify("active")
+              JSON.stringify({
+                state: "incomplete",
+                completedOnce: false,
+                stepToBeCompleted: true,
+              })
             );
             break;
           }
         }
       }
-
-      if (status === "active") {
+      if (status === "incomplete") {
         for (let i = 0; i < stateIndex; i++) {
-          if (stateArray[i] === "active") {
-            setStateArray[stateIndex]("incomplete");
+          if (stateArray[i].stepToBeCompleted) {
+            setStateArray[stateIndex]({
+              state: "incomplete",
+              completedOnce: false,
+              stepToBeCompleted: false,
+            });
             localStorage.setItem(
               `${stateNameArray[stateIndex]}State`,
-              JSON.stringify("incomplete")
+              JSON.stringify({
+                state: "incomplete",
+                completedOnce: false,
+                stepToBeCompleted: false,
+              })
             );
             break;
-          } else if (stateArray[i] !== "active" && i === stateIndex - 1) {
-            setStateArray[stateIndex]("active");
+          } else if (stateArray[i].stepToBeCompleted && i === stateIndex - 1) {
+            setStateArray[stateIndex]({
+              state: stateArray[i].state,
+              completedOnce: false,
+              stepToBeCompleted: true,
+            });
             localStorage.setItem(
               `${stateNameArray[stateIndex]}State`,
-              JSON.stringify("active")
+              JSON.stringify({
+                state: stateArray[i].state,
+                completedOnce: false,
+                stepToBeCompleted: true,
+              })
             );
           }
         }
-        if (status === "active" && stateIndex === 0) {
+        if (status === "incomplete" && stateIndex === 0) {
+          setCardState(cardState);
           localStorage.setItem(
             `${stateNameArray[stateIndex]}State`,
-            JSON.stringify("active")
+            JSON.stringify(cardState)
           );
         }
         for (let i = stateIndex + 1; i < stateArray.length; i++) {
-          if (stateArray[i] === "active") {
-            setStateArray[i]("incomplete");
+          if (stateArray[i].stepToBeCompleted) {
+            setStateArray[i]({
+              state: "incomplete",
+              completedOnce: false,
+              stepToBeCompleted: false,
+            });
             localStorage.setItem(
               `${stateNameArray[i]}State`,
-              JSON.stringify("incomplete")
+              JSON.stringify({
+                state: "incomplete",
+                completedOnce: false,
+                stepToBeCompleted: false,
+              })
             );
             break;
           }
         }
       }
-
       if (
         (status === "completed" || status === "pending") &&
-        nextState === "incomplete"
+        nextState.state === "incomplete"
       ) {
-        setNextState && setNextState("active");
-        localStorage.setItem(`${nextType}State`, JSON.stringify("active"));
-      } else if (status === "active" && nextState === "active") {
-        setNextState && setNextState("incomplete");
-        localStorage.setItem(`${nextType}State`, JSON.stringify("incomplete"));
+        setNextState &&
+          setNextState({
+            state: "incomplete",
+            completedOnce: false,
+            stepToBeCompleted: true,
+          });
+        localStorage.setItem(
+          `${nextType}State`,
+          JSON.stringify({
+            state: "incomplete",
+            completedOnce: false,
+            stepToBeCompleted: true,
+          })
+        );
+      } else if (status === "active" && nextState.stepToBeCompleted === true) {
+        setNextState &&
+          setNextState({
+            state: "incomplete",
+            completedOnce: false,
+            stepToBeCompleted: false,
+          });
+        localStorage.setItem(
+          `${nextType}State`,
+          JSON.stringify({
+            state: "incomplete",
+            completedOnce: false,
+            stepToBeCompleted: false,
+          })
+        );
       }
       if (status === "completed" || status === "pending" || refresh) {
-        localStorage.setItem(`${type}State`, JSON.stringify(status));
+        setCardState({
+          state: "completed",
+          completedOnce: true,
+          stepToBeCompleted: false,
+        });
+        localStorage.setItem(
+          `${type}State`,
+          JSON.stringify({
+            state: status,
+            completedOnce: true,
+            stepToBeCompleted: false,
+          })
+        );
       }
     }
     // eslint-disable-next-line
   }, [status, step]);
+  console.log(cardState.state);
 
   return (
     <Paper
@@ -145,16 +229,17 @@ const SettingOptions = ({
             alignItems: "center",
           }}
         >
-          {cardState === "completed" && (
+          {cardState.state === "completed" && (
             <CheckCircleIcon fontSize="small" style={{ fill: "#06c258" }} />
           )}
-          {(cardState === "active" || cardState === "incomplete") && (
+          {(cardState.stepToBeCompleted ||
+            cardState.state === "incomplete") && (
             <CheckCircleOutlineIcon
               fontSize="small"
               style={{ fill: "#90909090" }}
             />
           )}
-          {cardState === "pending" && (
+          {cardState.state === "pending" && (
             <ErrorIcon fontSize="small" style={{ fill: "#e4cd05" }} />
           )}
 
@@ -162,7 +247,7 @@ const SettingOptions = ({
             {text}
           </Typography>
         </Box>
-        {cardState === "active" && (
+        {cardState.stepToBeCompleted && (
           <Typography
             sx={{
               fontSize: 10,
@@ -184,3 +269,9 @@ const SettingOptions = ({
 };
 
 export default SettingOptions;
+
+const abc = {
+  completedOnce: true,
+  state: "complete || incomplete || pending",
+  stepToBeCompleted: true,
+};
