@@ -2,9 +2,29 @@ import React from "react";
 import { Box, Typography } from "@mui/material";
 import Appbar from "../components/Appbar";
 import Footer from "../components/Footer";
-import SettingOptions from "../components/SettingOptions";
-
+import StepCard from "../components/StepCard";
+const stepsArray = ["email", "bank", "card", "deposit", "payDistribution"];
+function getStepToBeCompleted() {
+  const e = JSON.parse(localStorage.getItem("email"));
+  const b = JSON.parse(localStorage.getItem("bank"));
+  const c = JSON.parse(localStorage.getItem("card"));
+  const d = JSON.parse(localStorage.getItem("deposit"));
+  const pd = JSON.parse(localStorage.getItem("payDistribution"));
+  const step1 = !e?.status || e?.status === "incomplete";
+  const step2 = !step1 && (!b?.status || b?.status === "incomplete");
+  const step3 = !step2 && !step1 && (!c?.status || c?.status === "incomplete");
+  const step4 =
+    !step3 && !step2 && !step1 && (!d?.status || d?.status === "incomplete");
+  const step5 =
+    !step4 &&
+    !step3 &&
+    !step2 &&
+    !step1 &&
+    (!pd?.status || pd?.status === "incomplete");
+  return [step1, step2, step3, step4, step5];
+}
 const AccountSettings = () => {
+  const stepsToBeCompletedArr = getStepToBeCompleted();
   return (
     <Box>
       <Appbar />
@@ -40,11 +60,13 @@ const AccountSettings = () => {
           >
             Select an option below to change your account settings.
           </Typography>
-          <SettingOptions text={"Verify Email"} />
-          <SettingOptions text={"Link a Bank"} />
-          <SettingOptions text={"Debit Card Details"} />
-          <SettingOptions text={"Direct Deposit"} />
-          <SettingOptions text={"Pay Distribution"} />
+          {stepsArray.map((item, idx) => (
+            <StepCard
+              key={item + idx}
+              stepName={item}
+              toBeCompletedNext={stepsToBeCompletedArr[idx]}
+            />
+          ))}
         </Box>
         <Box
           sx={{
@@ -61,5 +83,4 @@ const AccountSettings = () => {
     </Box>
   );
 };
-
 export default AccountSettings;
