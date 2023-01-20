@@ -29,7 +29,10 @@ const StepCard = ({ stepName, toBeCompletedNext }: Props) => {
         boxShadow: "2px 2px 5px rgb(0 0 0 / 10%)",
       }}
     >
-      <Box sx={{ display: "flex", flexDirection: "column" }}>
+      <Box
+        sx={{ display: "flex", flexDirection: "column" }}
+        data-testid="step-container"
+      >
         <Box
           sx={{
             height: "100%",
@@ -39,16 +42,25 @@ const StepCard = ({ stepName, toBeCompletedNext }: Props) => {
           }}
         >
           {status === "completed" && (
-            <CheckCircleIcon fontSize="small" style={{ fill: "#06c258" }} />
+            <CheckCircleIcon
+              fontSize="small"
+              style={{ fill: "#06c258" }}
+              data-testid="completed-step"
+            />
           )}
           {status === "incomplete" && (
             <CheckCircleOutlineIcon
               fontSize="small"
               style={{ fill: "#90909090" }}
+              data-testid="failed-step"
             />
           )}
           {status === "pending" && (
-            <ErrorIcon fontSize="small" style={{ fill: "#e4cd05" }} />
+            <ErrorIcon
+              fontSize="small"
+              style={{ fill: "#e4cd05" }}
+              data-testid="pending-step"
+            />
           )}
           ​
           <Typography sx={{ fontSize: 14, fontWeight: 600, pl: 3 }}>
@@ -63,13 +75,14 @@ const StepCard = ({ stepName, toBeCompletedNext }: Props) => {
               width: "250px",
               pl: 5.5,
             }}
+            data-testid="step-desc"
           >
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Cum nihil
             ullam velit blanditiis maxime exercitationem ab voluptatem.
           </Typography>
         )}
       </Box>
-      <IconButton onClick={settingHandler}>
+      <IconButton onClick={settingHandler} data-testid="stepbutton">
         <ChevronRightIcon />
       </IconButton>
     </Paper>
