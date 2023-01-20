@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import { within } from "@testing-library/react";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 
@@ -73,14 +74,39 @@ describe("test the steps", () => {
     userEvent.click(buttonClick1);
     userEvent.click(screen.getByText("Done"));
 
-    const buttonClick2 = screen.getAllByTestId("stepbutton")[0];
+    const buttonClick2 = screen.getAllByTestId("stepbutton")[2];
     userEvent.click(buttonClick2);
+    userEvent.click(screen.getByText("Done"));
 
-    const incompleteButton = screen.getByText("Incomplete");
-    expect(incompleteButton).toBeInTheDocument();
-    userEvent.click(incompleteButton);
+    const buttonClick3 = screen.getAllByTestId("stepbutton")[3];
+    userEvent.click(buttonClick3);
+    userEvent.click(screen.getByText("Done"));
+
+    const buttonClick4 = screen.getAllByTestId("stepbutton")[4];
+    userEvent.click(buttonClick4);
+    userEvent.click(screen.getByText("Done"));
+
+    const buttonClick5 = screen.getAllByTestId("stepbutton")[0];
+    userEvent.click(buttonClick5);
+
+    const incompleteButtonClick = screen.getByText("Incomplete");
+    expect(incompleteButtonClick).toBeInTheDocument();
+    userEvent.click(incompleteButtonClick);
     expect(screen.getAllByTestId("failed-step")[0]).toBeInTheDocument();
-    expect(screen.getByTestId("completed-step")).toBeInTheDocument();
-    expect(screen.getByTestId("step-desc")).toBeInTheDocument();
+    expect(screen.getAllByTestId("completed-step")[1]).toBeInTheDocument();
+    expect(screen.getAllByTestId("step-desc")[0]).toBeInTheDocument();
+
+    const buttonClick6 = screen.getAllByTestId("stepbutton")[1];
+    userEvent.click(buttonClick6);
+
+    const incompleteButtonClick2 = screen.getByText("Incomplete");
+    expect(incompleteButtonClick2).toBeInTheDocument();
+    userEvent.click(incompleteButtonClick2);
+
+    expect(screen.getAllByTestId("failed-step")[0]).toBeInTheDocument();
+    expect(screen.getAllByTestId("failed-step")[1]).toBeInTheDocument();
+    const step = screen.getAllByTestId("step");
+    expect(within(step[0]).getByTestId("step-desc")).toBeInTheDocument();
+    expect(within(step[1]).queryByTestId("step-desc")).toBeNull();
   });
 });
