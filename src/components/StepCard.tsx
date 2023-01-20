@@ -28,6 +28,7 @@ const StepCard = ({ stepName, toBeCompletedNext }: Props) => {
         borderRadius: 2,
         boxShadow: "2px 2px 5px rgb(0 0 0 / 10%)",
       }}
+      data-testid="step"
     >
       <Box
         sx={{ display: "flex", flexDirection: "column" }}
